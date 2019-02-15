@@ -1,4 +1,4 @@
-package com.jiedaibao.sbdemo.utils;
+package com.yuxia.sbdemo.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

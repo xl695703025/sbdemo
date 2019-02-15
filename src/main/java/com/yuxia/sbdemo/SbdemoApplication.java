@@ -1,4 +1,4 @@
-package com.jiedaibao.sbdemo;
+package com.yuxia.sbdemo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

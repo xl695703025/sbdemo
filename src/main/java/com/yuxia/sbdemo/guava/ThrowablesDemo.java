@@ -1,4 +1,4 @@
-package com.jiedaibao.sbdemo.guava;
+package com.yuxia.sbdemo.guava;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterators;

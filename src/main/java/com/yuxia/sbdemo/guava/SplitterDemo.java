@@ -1,4 +1,4 @@
-package com.jiedaibao.sbdemo.guava;
+package com.yuxia.sbdemo.guava;
 
 import com.google.common.base.Splitter;
 import org.junit.Test;
