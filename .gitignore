@@ -1,0 +1,14 @@
+.idea
+.svn
+svn.log
+*.iml
+.project
+.settings
+.classpath
+.externalToolBuilders
+.DS_Store
+/target/
+*/target/
+
+local-ip.properties
+*.log
