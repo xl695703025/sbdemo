@@ -1,21 +1,14 @@
 package com.yuxia.sbdemo.guava;
 
 import com.google.common.base.Throwables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class ThrowablesDemo {
     @Test
     public void test() {
-        List<Integer> list = Lists.newArrayListWithExpectedSize(2);
-        list.add(1);
-        list.add(2);
-        System.out.println(list.get(0));
-        System.out.println(Iterators.get(list.iterator(),1));
+
     }
 
     /**
