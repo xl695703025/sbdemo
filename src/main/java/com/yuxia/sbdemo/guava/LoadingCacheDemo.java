@@ -4,9 +4,15 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,6 +26,14 @@ public class LoadingCacheDemo {
      *
      * @throws Exception
      */
+    private Map<Integer,String> map;
+    @Before
+    public void init(){
+        map = Maps.newHashMapWithExpectedSize(3);
+        map.put(1, "yuxia");
+        map.put(2, "xl");
+        map.put(3, "yxl");
+    }
     @Test
     public void test1() throws Exception {
         // expireAfterWrite设置写入内存后30s后过期,第二次访问不会刷新过期时间
@@ -33,12 +47,8 @@ public class LoadingCacheDemo {
                 .build(new CacheLoader<Integer, String>() {
                     @Override
                     public String load(Integer key) throws Exception {
-                        Map<Integer, String> map = Maps.newHashMapWithExpectedSize(3);
-                        map.put(1, "yuxia");
-                        map.put(2, "xl");
-                        map.put(3, "yxl");
                         if (map.containsKey(key)) {
-                            System.out.println("查询数据成功");
+                            System.out.println("查询数据成功!!");
                         }
                         return map.get(key);
                     }
@@ -65,10 +75,7 @@ public class LoadingCacheDemo {
      */
     @Test
     public void test2() throws Exception {
-        Map<Integer, String> map = Maps.newHashMapWithExpectedSize(3);
-        map.put(1, "yuxia");
-        map.put(2, "xl");
-        map.put(3, "yxl");
+
         LoadingCache<Integer, String> cache = CacheBuilder
                 .newBuilder()
                 .refreshAfterWrite(3, TimeUnit.SECONDS)
@@ -85,6 +92,44 @@ public class LoadingCacheDemo {
         map.put(1,"yuxiaaa");
         //在3s的时候并没有刷新缓存，只有get()操作的时候才进行刷新
         Thread.sleep(6000);
+        System.out.println(cache.get(1));
+    }
+
+    /**
+     * 异步刷新
+     * @throws Exception
+     */
+    @Test
+    public void test3() throws Exception {
+        ListeningExecutorService backgroundRefreshPools =
+                MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(20));
+        LoadingCache<Integer, String> cache = CacheBuilder
+                .newBuilder()
+                .refreshAfterWrite(3, TimeUnit.SECONDS)
+                .build(new CacheLoader<Integer, String>() {
+                    @Override
+                    public String load(Integer key) throws Exception {
+                        if (map.containsKey(key)) {
+                            System.out.println("查询数据成功!");
+                        }
+                        return map.get(key);
+                    }
+
+                    @Override
+                    public ListenableFuture<String> reload(Integer key, String oldValue) throws Exception {
+                        return backgroundRefreshPools.submit(new Callable<String>(){
+                            @Override
+                            public String call() throws Exception {
+                                System.out.println(Thread.currentThread().getName()+"：缓存更新成功");
+                                return map.get(key);
+                            }
+                        });
+                    }
+                });
+        System.out.println(cache.get(1));
+        map.put(1,"yuxiaaa");
+        //在get()操作时，会异步更新缓存，有可能取到旧值，有可能是新值
+        Thread.sleep(4000);
         System.out.println(cache.get(1));
     }
 }
