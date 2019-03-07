@@ -3,7 +3,6 @@ package com.yuxia.sbdemo.guava;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -48,8 +47,8 @@ public class ImmutableDemo {
      */
     @Test
     public void test4() {
-        Set<String> immutableNamedColors =  ImmutableSet.of("red","green","black","white","grey");
-        List<String> colors = ((ImmutableSet<String>) immutableNamedColors).asList();
+        ImmutableSet<String> immutableNamedColors =  ImmutableSet.of("red","green","black","white","grey");
+        List<String> colors = immutableNamedColors.asList();
         //会抛异常
         //colors.add("s");
         for (String color : colors) {
