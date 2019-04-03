@@ -41,7 +41,7 @@ public class ServerConnect {
                     System.out.println("==");
                     continue;
                 }
-                selector.wakeup()
+                selector.wakeup();
                 /**
                  * SelectionKey的组成是selector和Channel
                  * 有事件发生的channel会被包装成selectionKey添加到selector的publicSelectedKeys属性中
