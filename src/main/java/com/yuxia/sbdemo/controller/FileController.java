@@ -17,8 +17,8 @@ public class FileController {
     }
     @RequestMapping("/test")
     public String test(Model model , HttpServletRequest request) throws Exception {
-        model.addAttribute("userName","yuxia");
-        request.setAttribute("ssss","sdasfdafasd");
+        model.addAttribute("userName","yuxia...");
+        request.setAttribute("ssss","sss");
         return "index";
     }
 
