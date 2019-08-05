@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--用于本地开发时用的日志文件，在maven .ignore文件添加该文件，不用上传到git中-->
+<!-- 每分钟自动扫描下配置变化，并且打印 logback 内部的日志信息 -->
+<configuration scan="true" debug="${log.logback.debug}">
+    <!-- 打印到控制台的标准输出，WEB 环境下就是输出到 catalina.out 文件中 -->
+    <appender name="stdoutAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>[%p][%d{yyyy-MM-dd HH:mm:ss}][%X{traceid}][%X{user_name}][%X{interface}][%c %L][%m]%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 日志打印SQL -->
+<!--    <logger name="xxx.pcac.provider.dao" additivity="true">-->
+<!--        <level value="DEBUG" />-->
+<!--        <appender-ref ref="sql"/>-->
+<!--    </logger>-->
+
+    <root level="${log.sys.level}">
+        <appender-ref ref="stdoutAppender"/>
+    </root>
+</configuration>

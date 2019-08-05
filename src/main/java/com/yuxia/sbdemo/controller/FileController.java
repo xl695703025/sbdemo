@@ -21,8 +21,4 @@ public class FileController {
         request.setAttribute("ssss","sss");
         return "index";
     }
-
-    public static void main(String[] args) {
-
-    }
 }

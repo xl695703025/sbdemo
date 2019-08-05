@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" debug="false">
+    <!-- 配置文件中可以被引用的属性，value 值推荐通过 maven 打包时替换 -->
+    <property name="LOG_HOME" value="${log.sys.path}"/>
+    <property name="LOG_LEVEL" value="${log.sys.level}"/>
+
+    <!-- 根日志：这个文件是全部所有的日志内容 -->
+    <appender name="rootAllFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/root.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500GB</totalSizeCap>
+            <!-- 按时间回滚的同时，按文件大小来回滚 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1GB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                [%level] [%thread] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%mdc{traceid}] [%mdc{jdb_traceid}] [%logger{0}] [%msg]%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- error 日志单独输出，上线重点关注这个文件的日志 -->
+    <appender name="errorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500GB</totalSizeCap>
+            <!-- 按时间回滚的同时，按文件大小来回滚 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1GB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>
+                [%level] [%thread] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%mdc{traceid}] [%mdc{jdb_traceid}] [%logger] [%msg]%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 告警日志,可以提供告警工具，监控这个文件来发送告警信息 -->
+    <appender name="alarmFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/monitor/alarm.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>50GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%mdc{traceid}] [%msg]%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- dubbo 日志，要多注意，某个服务出现问题 dubbo 框架日志会打印到这里，如超时 -->
+    <appender name="rpcFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/rpc.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>50GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                [%level] [%thread] [%mdc{traceid}] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%logger] [%msg]%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 用来提升异步性能的appender -->
+    <!--<appender name="asyncRootAppender" class="ch.qos.logback.classic.AsyncAppender">-->
+    <!--&lt;!&ndash; 不丢弃日志，最大长度设置为 2048 &ndash;&gt;-->
+    <!--<discardingThreshold>0</discardingThreshold>-->
+    <!--<queueSize>2048</queueSize>-->
+    <!--<appender-ref ref="rootAllFile"/>-->
+    <!--</appender>-->
+
+    <!-- 注意 additivity 决定了是否累加 appender -->
+    <logger name="rpc-event" level="WARN" additivity="false">
+        <appender-ref ref="rpcFile"/>
+    </logger>
+
+    <logger name="xxx.log.monitor.MonitorLog">
+        <appender-ref ref="alarmFile"/>
+    </logger>
+
+    <root level="${LOG_LEVEL}">
+        <!-- 异步 appender 性能提升的同时有一些问题需要注意 -->
+        <!-- 如果不能接受这些问题，改为 rootAllFile 通过减少日志等方式提升性能 -->
+        <!--<appender-ref ref="asyncRootAppender"/>-->
+        <appender-ref ref="rootAllFile"/>
+        <appender-ref ref="errorFile"/>
+    </root>
+</configuration>
