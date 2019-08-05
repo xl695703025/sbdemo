@@ -7,8 +7,8 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -27,7 +27,7 @@ public class LoadingCacheDemo {
      * @throws Exception
      */
     private Map<Integer,String> map;
-    @Before
+    @BeforeEach
     public void init(){
         map = Maps.newHashMapWithExpectedSize(3);
         map.put(1, "yuxia");

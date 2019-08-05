@@ -2,7 +2,7 @@ package com.yuxia.sbdemo.guava;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Map;

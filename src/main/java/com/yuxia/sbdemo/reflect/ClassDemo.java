@@ -1,6 +1,6 @@
 package com.yuxia.sbdemo.reflect;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
 * @Description:  一些关于Class的Demo

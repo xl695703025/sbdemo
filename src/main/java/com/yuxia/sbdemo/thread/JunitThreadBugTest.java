@@ -1,6 +1,6 @@
 package com.yuxia.sbdemo.thread;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * junit多线程测试的会出问题<br>

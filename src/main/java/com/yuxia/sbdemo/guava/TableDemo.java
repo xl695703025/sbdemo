@@ -2,7 +2,7 @@ package com.yuxia.sbdemo.guava;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TableDemo {
     @Test

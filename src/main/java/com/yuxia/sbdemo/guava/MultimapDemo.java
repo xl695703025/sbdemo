@@ -2,7 +2,7 @@ package com.yuxia.sbdemo.guava;
 
 import com.google.common.base.Function;
 import com.google.common.collect.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

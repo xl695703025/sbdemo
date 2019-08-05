@@ -2,7 +2,7 @@ package com.yuxia.sbdemo.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author : xiaolei

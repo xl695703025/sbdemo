@@ -1,7 +1,7 @@
 package com.yuxia.sbdemo.stream;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
 *  filter()相关的操作
